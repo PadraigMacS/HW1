@@ -85,6 +85,7 @@ ggplot(nile_df, aes(x = Year, y = Flow)) +
 
 Based on the reference from Cobb (1978), there may be a change point in 1898. We will now investigate this in this section.
 
+
 ```{r}
 #| label: investigate-1898
 #| message: false
@@ -98,7 +99,7 @@ pre_summary <- summary(pre_1898_data)
 post_1898_data <- Nile[time(Nile) > 1898]
 post_summary <- summary(post_1898_data)
 
-
+head(post_summary)
 ```
 
 ```{r}
