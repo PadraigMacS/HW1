@@ -1,6 +1,6 @@
 ---
 title: "STAT40830 - Homework 1"
-author: "Padraig Mac Suibhne - 23201326"
+author: "Padraig Mac Suibhne - 23201326 "
 date: today
 date-format: long
 editor: visual
