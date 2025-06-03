@@ -1,0 +1,126 @@
+---
+title: "STAT40830 - Homework 1"
+author: "Padraig Mac Suibhne - 23201326"
+date: today
+date-format: long
+editor: visual
+toc: true
+format: 
+  html:
+   embed-resources: true
+  pdf: 
+    geometry:
+    - top=18mm
+    - left=15mm
+    - bottom=25mm
+    - heightrounded
+    fontsize: 11pt
+    linestretch: 1.5
+execute: 
+  error: true
+echo: false
+---
+
+\newpage
+
+## 1. Introduction
+
+In this exercise, we will plot the \textbf{\textcolor{purple}{Nile}} data set that provides measurements of the annual flow of the river Nile at Aswan (formerly Assuan), 1871–1970, in $10^8 m^3$ “with apparent changepoint near 1898” (Cobb(1978), Table 1, p.249).
+
+```{r}
+#| label: load-libraries-data-prep
+#| message: false
+library(knitr)
+library(ggplot2)
+
+Nile_summary_array <- as.array(summary(Nile))
+dimnames(Nile_summary_array) <- list(c("Minimum", "First Quartile", "Median", "Mean", "Third Quartile", "Maximum"))
+# Convert array to a data frame
+Nile_summary_df <- data.frame(Statistic = names(Nile_summary_array), Annual_Flow = as.vector(Nile_summary_array))
+
+```
+
+## 2. Data Summary
+
+```{r}
+#| label: tbl-nile-data-summary
+#| tbl-cap: "Summary of Nile Data Set"
+#| tbl-colwidths: [20,15]
+#| layout-ncol: 1
+
+
+# Display the table with kable
+kable(Nile_summary_df)
+```
+
+The **Nile** data set provides **100** measurements, the summary of which is provided in @tbl-nile-data-summary.
+
+@fig-nile-time-series-plot outlines the annual flow rate for the timespan of the data set.
+
+```{r}
+#| label: fig-nile-time-series-plot
+#| fig-width: 10
+#| fig-height: 5
+#| fig-cap: "Annual Flow of River Nile 1871-1970"
+
+
+# Convert Nile dataset into a dataframe with a numeric year
+nile_df <- data.frame(Year = as.numeric(time(Nile)), Flow = as.numeric(Nile))
+
+# Plot with ggplot2 without the warning
+ggplot(nile_df, aes(x = Year, y = Flow)) +
+  geom_line(color = "blue") +
+  geom_point(color = "red") +
+  labs(title = "Annual Flow Nile River",
+       x = "Year",
+       y = "Flow (10e8 cubic meters)") +
+  theme_minimal()
+```
+
+## 3. Data Review
+
+Based on the reference from Cobb (1978), there may be a change point in 1898. We will now investigate this in this section.
+
+```{r}
+#| label: investigate-1898
+#| message: false
+
+
+# Pre-1898 data
+pre_1898_data <- Nile[time(Nile) <= 1898]
+pre_summary <- summary(pre_1898_data)
+
+# Post-1898 data
+post_1898_data <- Nile[time(Nile) > 1898]
+post_summary <- summary(post_1898_data)
+
+
+```
+
+```{r}
+#| label: tbl-nile-pre-post
+#| tbl-cap: "Annual Flow Pre and Post 1898"
+#| tbl-colwidths: [20,15,15]
+#| layout-ncol: 1
+
+# Create a data frame for display
+summary_table <- data.frame(
+  Statistic = names(Nile_summary_array),
+  Pre_1898 = round(as.numeric(pre_summary),2),
+  Post_1898 = round(as.numeric(post_summary),2)
+)
+
+# Display the table using kable
+kable(summary_table)
+```
+
+From @tbl-nile-pre-post , we can make the following conclusions:
+
+-   the annual flow rate post 1898 has seen a significant reduction on the data pre 1898.
+-   We see the median flow post 1898 is **`r paste(round(post_summary["Median"]/pre_summary["Median"]*100,1),"%", sep="")`** of the flow pre-1898.
+-   the mean annual flow rate has also reduced by *`r paste(round(100-post_summary["Mean"]/pre_summary["Mean"]*100,1),"%", sep="")`*, which is consistent with the \textcolor{red}{reduction in the median value}.
+-   \textcolor{blue}{you will notice that the reference to Table 3 is incorrect. In }\textcolor{green}{HTML format }\textcolor{blue}{ this table is designated as Table 2, but unfortunately in }\textcolor{green}{PDF format }\textcolor{blue}{ the reference is Table 3. I tried unsuccessfully to fix this.}
+
+## 4. References
+
+Cobb, G. W. (1978). The problem of the Nile: conditional solution to a change-point problem. Biometrika 65, 243–51.
