@@ -27,6 +27,8 @@ echo: false
 
 In this exercise, we will plot the \textbf{\textcolor{purple}{Nile}} data set that provides measurements of the annual flow of the river Nile at Aswan (formerly Assuan), 1871–1970, in $10^8 m^3$ “with apparent changepoint near 1898” (Cobb(1978), Table 1, p.249).
 
+This is a new line to demonstrate a committed change.
+
 ```{r}
 #| label: load-libraries-data-prep
 #| message: false
