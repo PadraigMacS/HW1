@@ -29,6 +29,8 @@ In this exercise, we will plot the \textbf{\textcolor{purple}{Nile}} data set th
 
 This is a new line to demonstrate a committed change.
 
+This is a second line addition.
+
 ```{r}
 #| label: load-libraries-data-prep
 #| message: false
