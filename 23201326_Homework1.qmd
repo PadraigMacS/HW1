@@ -31,6 +31,8 @@ This is a new line to demonstrate a committed change.
 
 This is a second line addition.
 
+I updated the token so am making this change.
+
 ```{r}
 #| label: load-libraries-data-prep
 #| message: false
@@ -84,7 +86,6 @@ ggplot(nile_df, aes(x = Year, y = Flow)) +
 ## 3. Data Review
 
 Based on the reference from Cobb (1978), there may be a change point in 1898. We will now investigate this in this section.
-
 
 ```{r}
 #| label: investigate-1898
